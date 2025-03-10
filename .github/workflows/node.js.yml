@@ -3,10 +3,10 @@ name: Deploy to Vercel
 on:
   push:
     branches:
-      - master # Desplegar cuando se haga push a la rama master
+      - master
   pull_request:
     branches:
-      - master # Desplegar también cuando haya un pull request hacia master
+      - master
 
 jobs:
   build:
@@ -14,13 +14,13 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x] # Puedes cambiar la versión si lo deseas
+        node-version: [22.x]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
@@ -29,11 +29,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build the project
+      - name: Build the Next.js project
         run: npm run build
-
-      - name: Export the project (if you need static export)
-        run: npm run export
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
