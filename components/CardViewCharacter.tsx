@@ -48,23 +48,16 @@ export default function CardViewCharacter(character: any) {
             <div className="flex items-center gap-2">
               <MapPin className="text-blue-400" size={20} />
               <span className="text-white/90">
-                Origin: {character.character.name}
+                Origen: {character.character.name}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="text-green-400" size={20} />
               <span className="text-white/90">
-                Location: {character.character.origin.name}
+                Locación: {character.character.origin.name}
               </span>
             </div>
           </div>
-
-          <Button
-            className="w-full bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
-            onClick={() => window.location.reload()}
-          >
-            Get Random Character
-          </Button>
         </CardFooter>
       </Card>
     </div>
