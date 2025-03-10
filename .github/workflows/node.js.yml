@@ -1,10 +1,12 @@
-name: Node.js CI
+name: Deploy to Vercel
 
 on:
   push:
-    branches: ["master"]
+    branches:
+      - master # Desplegar cuando se haga push a la rama master
   pull_request:
-    branches: ["master"]
+    branches:
+      - master # Desplegar también cuando haya un pull request hacia master
 
 jobs:
   build:
@@ -12,24 +14,31 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [22.x] # Puedes cambiar la versión si lo deseas
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm install
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm run export
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Export the project (if you need static export)
+        run: npm run export
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v20
         with:
-          branch: gh-pages
-          folder: out
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: "--prod"
